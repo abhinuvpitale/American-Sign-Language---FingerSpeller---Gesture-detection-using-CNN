@@ -45,9 +45,11 @@ tf.summary.scalar(name="Accuracy", tensor=accuracy)
 tf.summary.image(name="Input_images", tensor=X)
 summary = tf.summary.merge_all()
 
+saver = tf.train.Saver()
+
 # Initializer
 init = tf.global_variables_initializer()
-
+saver_step = 100
 with tf.Session() as sess:
     writer = tf.summary.FileWriter(logdir="./Tensorboard", graph=sess.graph)
 
@@ -64,6 +66,7 @@ with tf.Session() as sess:
         if step%par.display_step == 0 or step == 1:
             loss,acc = sess.run([loss_op,accuracy],feed_dict={X:batch_x,Y:sess.run(batch_y),keep_prob:1.0})
             print('Step '+str(step)+' Loss:'+str(loss)+' Accuracy: '+str(acc))
-
+        if step%saver_step == 0:
+            saver.save(sess,save_path='./Saved/model'+step)
 
     print('Optimised!!')
