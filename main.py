@@ -67,6 +67,6 @@ with tf.Session() as sess:
             loss,acc = sess.run([loss_op,accuracy],feed_dict={X:batch_x,Y:sess.run(batch_y),keep_prob:1.0})
             print('Step '+str(step)+' Loss:'+str(loss)+' Accuracy: '+str(acc))
         if step%saver_step == 0:
-            saver.save(sess,save_path='./Saved/model'+step)
+            saver.save(sess,save_path=par.saved_path+str(step))
 
     print('Optimised!!')
