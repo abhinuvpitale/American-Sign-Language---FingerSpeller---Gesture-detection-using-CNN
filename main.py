@@ -29,16 +29,16 @@ biases = {
 
 # Creating the model
 logits = layers.convnet(X,weights,biases,keep_prob)
-prediction = tf.nn.softmax(logits)
+prediction = tf.nn.softmax(logits,name='prediction')
 
 # Defining the loss
 loss_op = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits,labels=Y), name="Loss")
-optimiser = tf.train.AdamOptimizer(par.learning_rate)
-training_op =  optimiser.minimize(loss_op)
+optimiser = tf.train.AdamOptimizer(par.learning_rate,name='optimiser')
+training_op =  optimiser.minimize(loss_op,name='training')
 
 # Evaluating Model
-correct_pred = tf.equal(tf.argmax(prediction,1),tf.argmax(Y,1))
-accuracy = tf.reduce_mean(tf.cast(correct_pred,tf.float32))
+correct_pred = tf.equal(tf.argmax(prediction,1),tf.argmax(Y,1),name='correct_pred')
+accuracy = tf.reduce_mean(tf.cast(correct_pred,tf.float32),name='accuracy')
 
 tf.summary.scalar(name="Loss", tensor=loss_op)
 tf.summary.scalar(name="Accuracy", tensor=accuracy)
@@ -67,6 +67,6 @@ with tf.Session() as sess:
             loss,acc = sess.run([loss_op,accuracy],feed_dict={X:batch_x,Y:sess.run(batch_y),keep_prob:1.0})
             print('Step '+str(step)+' Loss:'+str(loss)+' Accuracy: '+str(acc))
         if step%saver_step == 0:
-            saver.save(sess,save_path=par.saved_path+str(step))
+            saver.save(sess,save_path=par.saved_path+str(step+1))
 
     print('Optimised!!')

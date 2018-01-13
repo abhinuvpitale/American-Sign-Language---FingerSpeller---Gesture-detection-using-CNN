@@ -27,4 +27,4 @@ def convnet(inputs, weights, biases, keep_prob = parameters.dropout):
     fc1 = tf.nn.dropout(fc1,keep_prob)
 
     # Output
-    return tf.add(tf.matmul(fc1,weights['out']),biases['out'])
+    return tf.add(tf.matmul(fc1,weights['out']),biases['out'],name='logits')
