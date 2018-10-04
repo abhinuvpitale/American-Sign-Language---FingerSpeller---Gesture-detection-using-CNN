@@ -4,3 +4,6 @@
 OSD Database
 
 Uses a Convolutional Neural Net to classify different gestures for the American Sign Language.
+
+
+-- Under Construction --
